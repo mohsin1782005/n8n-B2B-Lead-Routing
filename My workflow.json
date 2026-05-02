@@ -1,0 +1,139 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "documentId": {
+          "__rl": true,
+          "value": "1KkSR5jS55eWWpo1rl7fwpDJuOBsBGAC4ZhqFv5Fkbss",
+          "mode": "list",
+          "cachedResultName": "n8n Lead Routing Project",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KkSR5jS55eWWpo1rl7fwpDJuOBsBGAC4ZhqFv5Fkbss/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1KkSR5jS55eWWpo1rl7fwpDJuOBsBGAC4ZhqFv5Fkbss/edit#gid=0"
+        },
+        "event": "rowAdded",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e7cc3aac-1519-442f-9ba3-35108795cab5",
+      "name": "Google Sheets Trigger",
+      "credentials": {
+        "googleSheetsTriggerOAuth2Api": {
+          "id": "iaFJnPxsVZCHKksR",
+          "name": "Google Sheets Trigger account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "dc125647-242c-4597-8e65-fbd2cb8591a7",
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "Ready",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "8d748d2b-e4ff-48ea-a5f1-9accdf55d98c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "mohsinijaz1782005@gmail.com",
+        "subject": "=New Ready Lead: {{ $json.Company }}",
+        "message": "=Name: {{ $json['Lead Name'] }}\nEmail: {{ $json.Email }}\nScore: {{ $json['Lead Score'] }}\nStatus: {{ $json.Status }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        -81.0234375
+      ],
+      "id": "c97569c5-ea45-479b-9c31-3e54f21747bf",
+      "name": "Send a message",
+      "webhookId": "eb9a8f1a-2082-4e81-bfef-afb6ce7802b7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "eqw5Xg2ef6uoGC32",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Sheets Trigger": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "e01bd71b-8d29-4b66-8660-cc642ae19a0d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1d1549b841ca3a48b02d8f8dd9c97e097ede0a65513db2a72fdc0a351735ec25"
+  },
+  "id": "POrgrn9JxPvl57rc",
+  "tags": []
+}
